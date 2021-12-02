@@ -13,7 +13,8 @@ where
 fn main() {
     if let Ok(input) = read_input("day2.txt") {
         let mut horizontal: i32 = 0;
-        let mut vertical: i32 = 0;
+        let mut depth: i32 = 0;
+        let mut aim: i32 = 0;
 
         // First pass
         for line in input {
@@ -22,19 +23,25 @@ fn main() {
                 let num_spaces: i32 = rule[1].parse::<i32>().unwrap();
 
                 match rule[0] {
-                    "forward" => horizontal += num_spaces,
-                    "down" => vertical += num_spaces,
-                    "up" => vertical -= num_spaces,
+                    "forward" => {
+                        horizontal += num_spaces;
+                        depth += aim * num_spaces;
+                    }
+                    "down" => aim += num_spaces,
+                    "up" => aim -= num_spaces,
                     _ => println!("Unknown rule: {}", rule[0]),
                 }
             }
+
+            println!("horizontal: {}, aim: {}, depth: {}", horizontal, aim, depth)
         }
 
         println!(
-            "horizontal: {}, vertical: {}\n\nproduct: {}",
+            "\n\n--\n\nhorizontal: {}, aim: {}, depth: {}\n\nproduct: {}",
             horizontal,
-            vertical,
-            horizontal * vertical
+            aim,
+            depth,
+            horizontal * depth
         )
     }
 }
