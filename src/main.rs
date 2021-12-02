@@ -11,38 +11,30 @@ where
 }
 
 fn main() {
-    if let Ok(input) = read_input("day1.txt") {
-        let mut depths: Vec<i32> = Vec::new();
+    if let Ok(input) = read_input("day2.txt") {
+        let mut horizontal: i32 = 0;
+        let mut vertical: i32 = 0;
 
         // First pass
         for line in input {
             if let Ok(ln) = line {
-                depths.push(ln.parse::<i32>().unwrap());
+                let rule: Vec<&str> = ln.split(" ").collect();
+                let num_spaces: i32 = rule[1].parse::<i32>().unwrap();
+
+                match rule[0] {
+                    "forward" => horizontal += num_spaces,
+                    "down" => vertical += num_spaces,
+                    "up" => vertical -= num_spaces,
+                    _ => println!("Unknown rule: {}", rule[0]),
+                }
             }
         }
 
-        let mut windows: Vec<i32> = Vec::new();
-
-        for (idx, depth) in depths.iter().enumerate() {
-            if idx < depths.len() - 2 {
-                windows.push(depth.to_owned() + depths[idx + 1] + depths[idx + 2]);
-                // println!("[{}, {}, {}]", depth, depths[idx + 1], depths[idx + 2]);
-            }
-        }
-
-        let mut depth_changes = 0;
-        let mut last_depth: &i32 = &0.to_owned();
-
-        for window in windows.iter() {
-            println!("{}, {}", window, last_depth);
-
-            if window > last_depth {
-                depth_changes += 1;
-            }
-
-            last_depth = window;
-        }
-
-        println!("Depth changes {}", depth_changes - 1);
+        println!(
+            "horizontal: {}, vertical: {}\n\nproduct: {}",
+            horizontal,
+            vertical,
+            horizontal * vertical
+        )
     }
 }
